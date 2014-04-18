@@ -1,5 +1,7 @@
 FROM ubuntu:12.04
 
+MAINTAINER Skynet http://skynet.im/
+
 RUN apt-get update -y --fix-missing
 RUN apt-get install -y python-software-properties 
 RUN add-apt-repository ppa:chris-lea/node.js
@@ -12,12 +14,12 @@ RUN apt-get -y install redis-server apt-utils supervisor nodejs
 RUN apt-get -y install -o apt::architecture=amd64 mongodb-org=2.6.0
 
 RUN sed -i 's/daemonize yes/daemonize no/g' /etc/redis/redis.conf
-ADD . /var/www
-RUN cd /var/www && npm install
-ADD ./docker/config.js.docker /var/www/config.js
-ADD ./docker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
-RUN mkdir /var/log/skynet
 
 EXPOSE 3000
 
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"] 
+ONBUILD ADD . /var/www
+ONBUILD RUN cd /var/www && npm install
+ONBUILD ADD ./docker/config.js.docker /var/www/config.js
+ONBUILD ADD ./docker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+ONBUILD RUN mkdir /var/log/skynet
+ONBUILD CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"] 
