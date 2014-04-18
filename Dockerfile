@@ -1,6 +1,6 @@
 FROM ubuntu:12.04
 
-MAINTAINER Skynet http://skynet.im/
+MAINTAINER Skynet https://skynet.im/ <chris+docker@skynet.im>
 
 RUN apt-get update -y --fix-missing
 RUN apt-get install -y python-software-properties 
