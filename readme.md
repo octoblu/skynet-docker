@@ -37,20 +37,29 @@ Press
 Installing with Docker
 ----------------------
 
-The default Dockerfile will run Skynet, MongoDB and Redis in a single container to make quick experiments easier.
+The default Dockerfile will run Skynet, the 64 bit version of MongoDB, and Redis in a single container to make quick experiments easier. It runs on Ubuntu 12.04 LTS to ensure a stable environment.
 
 You'll need docker installed, then to build the Skynet image:
 
 From the directory where the Dockerfile resides run.
 
 ```
-# docker build -t=skynet .
+docker build -t=skynet-base .
 ```
 
-To run a fully self contained instance using the source bundled in the container.
+This builds the base skynet Docker image. The base image does not include any skynet code, but instead holds build triggers that you can use to build a customized versionof skynet with your own settings.
+
+To do so with this base image, go into your skynet codebase and run a docker build there with your personal skynet changes.
 
 ```
-# docker run -i -t -p 3000 skynet
+cd /path/to/your/skynet/
+docker build -t=skynet-custom .
+```
+
+To run a fully self contained customized instance using the source bundled in the container.
+
+```
+docker run -i -t -p 3000 skynet-custom
 ```
 
 This will run skynet and expose port 3000 from the container on a random host port that you can find by running docker ps.
